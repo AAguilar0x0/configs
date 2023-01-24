@@ -1,0 +1,2 @@
+print("source")
+require("ava")
