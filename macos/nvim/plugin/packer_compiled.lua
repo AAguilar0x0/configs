@@ -169,6 +169,11 @@ _G.packer_plugins = {
     path = "/Users/adrianvincentaguilar/.local/share/nvim/site/pack/packer/start/undotree",
     url = "https://github.com/mbbill/undotree"
   },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/Users/adrianvincentaguilar/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
   ["vscode.nvim"] = {
     loaded = true,
     path = "/Users/adrianvincentaguilar/.local/share/nvim/site/pack/packer/start/vscode.nvim",

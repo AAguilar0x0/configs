@@ -1,15 +1,16 @@
 function ColorMyPencils(color)
-	color = color or 'vscode'
-	vim.cmd.colorscheme(color)
+    color = color or 'vscode'
+    vim.cmd.colorscheme(color)
 
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
 -- ColorMyPencils()
 
 local c = require('vscode.colors').get_colors()
 require('vscode').setup({
+
     -- Enable transparent background
     transparent = true,
 
@@ -28,6 +29,6 @@ require('vscode').setup({
     group_overrides = {
         -- this supports the same val table as vim.api.nvim_set_hl
         -- use colors from this colorscheme by requiring vscode.colors!
-        Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
+        Cursor = { fg = c.vscDarkBlue, bg = c.vscLightGreen, bold = true },
     }
 })
