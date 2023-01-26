@@ -1,2 +1,1 @@
-print("source")
 require("ava")
