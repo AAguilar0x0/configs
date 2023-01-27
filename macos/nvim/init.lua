@@ -1,1 +1,2 @@
 require("ava")
+-- require("kickstart")
