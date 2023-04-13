@@ -1,2 +1,0 @@
-require("ava")
--- require("kickstart")
