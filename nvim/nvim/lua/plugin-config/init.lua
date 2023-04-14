@@ -1,4 +1,4 @@
-local base = "ava.plugin-config."
+local base = "plugin-config."
 require(base .. "colors")
 require(base .. "fugitive")
 require(base .. "harpoon")
