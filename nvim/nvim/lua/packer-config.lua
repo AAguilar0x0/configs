@@ -60,7 +60,10 @@ require('packer').startup(function(use)
     }
 
     use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-    use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+    use {
+      'lukas-reineke/indent-blankline.nvim',
+      tag = 'v2.20.8',
+    } -- Add indentation guides even on blank lines
     use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
     use {
         "windwp/nvim-autopairs",
