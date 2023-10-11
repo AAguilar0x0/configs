@@ -69,6 +69,7 @@ require('packer').startup(function(use)
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
     }
+    use 'github/copilot.vim'
     if is_bootstrap then
         require('packer').sync()
     end
