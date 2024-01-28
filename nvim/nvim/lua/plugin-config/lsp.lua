@@ -1,11 +1,15 @@
 local lsp = require("lsp-zero")
 
+-- Manually add if lsp is not triggered when opening
+vim.filetype.add({ extension = { templ = "templ" } })
+
 lsp.preset("recommended")
 
 lsp.ensure_installed({
     'gopls',
     'tsserver',
     'rust_analyzer',
+    'templ',
 })
 
 -- Fix Undefined global 'vim'
