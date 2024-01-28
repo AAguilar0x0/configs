@@ -1,4 +1,5 @@
 local lsp = require("lsp-zero")
+local lspconfig = require("lspconfig")
 
 -- Manually add if lsp is not triggered when opening
 vim.filetype.add({ extension = { templ = "templ" } })
@@ -10,6 +11,9 @@ lsp.ensure_installed({
     'tsserver',
     'rust_analyzer',
     'templ',
+    'html',
+    'htmx',
+    'tailwindcss',
 })
 
 -- Fix Undefined global 'vim'
@@ -23,6 +27,24 @@ lsp.configure('lua-language-server', {
     }
 })
 
+lspconfig.html.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { "html", "templ" },
+})
+
+lspconfig.htmx.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { "html", "templ" },
+})
+
+lsp.configure('tailwindcss', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "templ", "astro", "javascript", "typescript", "react" },
+  init_options = { userLanguages = { templ = "html" } },
+})
 
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
