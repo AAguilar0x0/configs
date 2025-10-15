@@ -1,0 +1,14 @@
+[user]
+	name = Adrian Vincent Aguilar
+	email = aguilaradrianvincent@gmail.com
+  ; name = adrianaguilarcognith.com
+  ; email = adrian.aguilar_8874@email.ide.builder.ai
+[init]
+	defaultBranch = main
+[alias]
+	pushup = "!git push --set-upstream origin $(git symbolic-ref --short HEAD)"
+[push]
+	autoSetupRemote = true
+[grep]
+	extendedRegexp = true
+
