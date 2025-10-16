@@ -38,22 +38,55 @@ return {
       'rafamadriz/friendly-snippets', -- Optional
     },
     config = function()
+      vim.filetype.add({ extension = { templ = 'templ' } })
+      -- vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format()]])
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          local opts = { buffer = event.buf, remap = false }
+          local bufnr = event.buf
+          local opts = { buffer = bufnr, remap = false }
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-          vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-          vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, opts)
-          vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-          vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-          vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-          vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-          vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-          vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-          vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-          vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-          vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+          if client ~= nil and client:supports_method('textDocument/completion') then
+            vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
+            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+            vim.keymap.set('i', '<C-Space>', function()
+              vim.lsp.completion.get()
+            end)
+          end
+
+          vim.keymap.set('n', 'gd', function()
+            vim.lsp.buf.definition()
+          end, opts)
+          vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, opts)
+          vim.keymap.set('n', 'K', function()
+            vim.lsp.buf.hover()
+          end, opts)
+          vim.keymap.set('n', '<leader>vws', function()
+            vim.lsp.buf.workspace_symbol()
+          end, opts)
+          vim.keymap.set('n', '<leader>vd', function()
+            vim.diagnostic.open_float()
+          end, opts)
+          vim.keymap.set('n', '[d', function()
+            vim.lsp.diagnostic.goto_next()
+          end, opts)
+          vim.keymap.set('n', ']d', function()
+            vim.lsp.diagnostic.goto_prev()
+          end, opts)
+          vim.keymap.set('n', '<leader>vca', function()
+            vim.lsp.buf.code_action()
+          end, opts)
+          vim.keymap.set('n', '<leader>vrr', function()
+            vim.lsp.buf.references()
+          end, opts)
+          vim.keymap.set('n', '<leader>vrn', function()
+            vim.lsp.buf.rename()
+          end, opts)
+          vim.keymap.set('i', '<C-h>', function()
+            vim.lsp.buf.signature_help()
+          end, opts)
 
           vim.diagnostic.config({
             -- virtual_lines = true,
@@ -93,6 +126,20 @@ return {
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        html = {
+          filetypes = { 'html', 'templ' },
+        },
+
+        -- htmx = {
+        --   filetypes = { "html", "templ" },
+        -- },
+
+        tailwindcss = {
+          filetypes = { 'templ', 'astro', 'javascript', 'typescript', 'react' },
+          init_options = {
+            userLanguages = { templ = 'html' },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -100,9 +147,8 @@ return {
           -- capabilities = {},
           settings = {
             Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
+              completion = { callSnippet = 'Replace' },
+              diagnostics = { globals = { 'vim' } },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
             },
@@ -127,7 +173,7 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         -- 'gopls',
-        -- 'ts_ls',
+        'ts_ls',
         -- 'rust_analyzer',
         -- 'templ',
         -- 'html',
@@ -149,5 +195,5 @@ return {
         },
       })
     end,
-  }
+  },
 }
