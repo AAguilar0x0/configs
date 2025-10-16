@@ -7,8 +7,9 @@ eval "$(pyenv init -)"
 # eval "$(oh-my-posh init zsh --config /opt/homebrew/opt/oh-my-posh/share/oh-my-posh/themes/clean-detailed.omp.json)"
 eval "$(oh-my-posh init zsh --config ~/clean-detailed.omp.json)"
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
+[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
 
 # export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
