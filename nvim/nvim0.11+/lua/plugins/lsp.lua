@@ -41,20 +41,64 @@ return {
       vim.filetype.add({ extension = { templ = 'templ' } })
       -- vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format()]])
 
+      -- For snippets configuraiton
+      local cmp = require('cmp')
+      local luasnip = require('luasnip')
+      require('luasnip.loaders.from_vscode').lazy_load()
+      local cmp_select = { behavior = cmp.SelectBehavior.Select }
+      local cmp_mappings = {
+        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-j>'] = cmp.mapping.scroll_docs(4),
+        -- disable completion with tab
+        -- this helps with copilot setup
+        ['<Tab>'] = nil,
+        ['<S-Tab>'] = nil,
+      }
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert(cmp_mappings),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        }),
+        formatting = {
+          fields = { 'abbr', 'kind', 'menu' },
+        },
+      })
+
+      vim.diagnostic.config({
+        -- virtual_lines = true,
+        virtual_lines = {
+          current_line = true,
+        },
+        virtual_text = true,
+        severity_sort = true,
+      })
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
           local bufnr = event.buf
           local opts = { buffer = bufnr, remap = false }
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          -- local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-          if client ~= nil and client:supports_method('textDocument/completion') then
-            vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
-            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
-            vim.keymap.set('i', '<C-Space>', function()
-              vim.lsp.completion.get()
-            end)
-          end
+          -- if client ~= nil and client:supports_method('textDocument/completion') then
+          --   vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
+          --   vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+          --   vim.keymap.set('i', '<C-Space>', function()
+          --     vim.lsp.completion.get()
+          --   end)
+          -- end
 
           vim.keymap.set('n', 'gd', function()
             vim.lsp.buf.definition()
@@ -87,13 +131,6 @@ return {
           vim.keymap.set('i', '<C-h>', function()
             vim.lsp.buf.signature_help()
           end, opts)
-
-          vim.diagnostic.config({
-            -- virtual_lines = true,
-            virtual_lines = {
-              current_line = true,
-            },
-          })
         end,
       })
 
