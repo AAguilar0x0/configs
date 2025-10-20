@@ -1,6 +1,7 @@
 tap "jandedobbeleer/oh-my-posh"
 tap "teamookla/speedtest"
 brew "git"
+brew "jq"
 brew "neovim"
 brew "nvm"
 brew "ripgrep"
