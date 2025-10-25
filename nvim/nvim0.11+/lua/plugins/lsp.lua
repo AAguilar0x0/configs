@@ -53,6 +53,10 @@ return {
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
+        ['<CR>'] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        }),
         -- disable completion with tab
         -- this helps with copilot setup
         ['<Tab>'] = nil,
